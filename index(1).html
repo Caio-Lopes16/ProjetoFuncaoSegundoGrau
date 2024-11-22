@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Funções de Segundo Grau</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Estilos gerais da página */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #151515; /* Cor escura para o fundo */
+            color: #B7B7B7; /* Cor clara para o texto */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #0C0C0C; /* Fundo escuro */
+            color: #B7B7B7;           /* Texto claro */
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Estilo do menu de navegação */
+        .menu {
+            display: flex;
+            gap: 40px; /* Espaçamento entre os links */
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .menu a {
+            text-decoration: none; /* Remove o sublinhado */
+            color: #B7B7B7;        /* Cor inicial do link */
+            font-weight: bold;
+            font-size: 18px; 
+            transition: color 0.3s, border-bottom 0.3s; /* Transição suave */
+        }
+
+        /* Estilo quando o link é focado ou ao passar o mouse */
+        .menu a:hover {
+            color: #1e88e5;          /* Cor azul ao passar o mouse */
+            border-bottom: 2px solid #1e88e5; /* Sublinhado visível */
+        }
+
+        /* Estilos para o cabeçalho e rodapé */
+        footer {
+            background-color: #0C0C0C; /* Fundo escuro */
+            color: #B7B7B7; /* Cor clara para o texto */
+            padding: 15px 20px;
+            text-align: left;
+        }
+
+        /* Estilo do contêiner principal */
+        .container {
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra suave */
+            width: 750px;
+            text-align: center;
+            margin: 20px auto;
+        }
+
+        /* Margens entre os elementos */
+        div {
+            margin: 15px 0;
+        }
+
+        /* Estilos para as labels (rótulos) */
+        label {
+            font-weight: bold;
+            color: #ccc;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        /* Estilos para os campos de input de números */
+        input[type="number"] {
+            width: 50%;
+            padding: 12px;
+            border: 2px solid #444;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            outline: none;
+        }
+
+        /* Estilo para o campo de input quando está em foco */
+        input[type="number"]:focus {
+            border-color: #1e88e5;
+            box-shadow: 0 0 8px rgba(30, 136, 229, 0.8);
+        }
+
+        /* Estilos para o botão */
+        .btn {
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* Estilos para o botão quando passa o mouse (hover) */
+        .btn:hover {
+            background: linear-gradient(135deg, #1565c0, #1e88e5);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Estilos para o botão quando está pressionado (ativo) */
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilos para o gráfico */
+        canvas {
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <h1>Função Segundo Grau</h1>
+        <div class="container mx-auto px-10 py-4 flex justify-between items-center">
+            <nav class="menu">
+                <a href="index(1).html">Calculadora</a>
+                <a href="aprender.html">Aprender</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contêiner para o conteúdo da calculadora -->
+    <div class="container">
+        <h1>Calculadora de Funções de Segundo Grau</h1>
+
+        <!-- Entrada para o valor de 'a' -->
+        <div>
+            <label for="a">Valor de A:</label>
+            <input type="number" id="a" placeholder="Digite o coeficiente A">
+        </div>
+
+        <!-- Entrada para o valor de 'b' -->
+        <div>
+            <label for="b">Valor de B:</label>
+            <input type="number" id="b" placeholder="Digite o coeficiente B">
+        </div>
+
+        <!-- Entrada para o valor de 'c' -->
+        <div>
+            <label for="c">Valor de C:</label>
+            <input type="number" id="c" placeholder="Digite o coeficiente C">
+        </div>
+
+        <!-- Botão de cálculo -->
+        <button class="btn" onclick="calcular()">CALCULAR</button>
+
+        <!-- Exibição do resultado -->
+        <div id="result"></div>
+
+        <!-- Canvas para o gráfico -->
+        <canvas id="grafico" width="700" height="700"></canvas>
+    </div>
+
+    <!-- Rodapé -->
+    <footer style="text-align: center; margin-top: 50px;">
+        Desenvolvido por Caio Lopes, Kaynan Lima, Pedro, Vinícius Carmello e Vinícius Nellis | 2024 | ADS - FATEC AMERICANA
+    </footer>
+
+    <script>
+        let chart; // Declaração da variável para armazenar o gráfico
+
+        function calcular() {
+            // Obtendo os valores dos inputs
+            const a = parseFloat(document.getElementById('a').value);
+            const b = parseFloat(document.getElementById('b').value);
+            const c = parseFloat(document.getElementById('c').value);
+
+            // Verificando se os valores são válidos
+            if (isNaN(a) || isNaN(b) || isNaN(c)) {
+                alert('Por favor, insira valores válidos para A, B e C.');
+                return;
+            }
+            if ((a) === 0){
+                alert('Digite um valor DIFERENTE de 0 para o coeficiente A.');
+                return;
+            }
+
+            // Calculando o delta da equação
+            const delta = b * b - 4 * a * c;
+            let resultText = ''; // Texto para exibição do resultado
+
+            let x1, x2;
+            // Calculando as raízes da equação
+            if (delta < 0) {
+                resultText = 'A equação NÃO possui raízes reais.';
+            } else if (delta === 0) {
+                x1 = x2 = -b / (2 * a);
+                resultText = `A equação possui UMA raiz real: X = ${x1.toFixed(2)}`;
+            } else {
+                x1 = (-b + Math.sqrt(delta)) / (2 * a);
+                x2 = (-b - Math.sqrt(delta)) / (2 * a);
+                resultText = `A equação possui DUAS raízes reais: X1 = ${x1.toFixed(2)}, X2 = ${x2.toFixed(2)}`;
+            }
+
+            // Calculando o vértice da parábola
+            const xv = -b / (2 * a);
+            const yv = a * xv * xv + b * xv + c;
+            resultText += `<br>Vértice: (Xv = ${xv.toFixed(2)}, Yv = ${yv.toFixed(2)})`;
+
+            // Definindo se a parábola está voltada para cima ou para baixo
+            resultText += `<br>Parábola ${a > 0 ? 'aberta para cima' : 'aberta para baixo'}.`;
+
+            // Exibindo o resultado na página
+            document.getElementById('result').innerHTML = resultText;
+
+            // Preparando os dados para o gráfico
+            const labels = [];
+            const data = [];
+            const roots = [];
+
+            for (let x = -20; x <= 20; x += 0.1) {
+                labels.push(x.toFixed(1));
+                data.push(a * x * x + b * x + c);
+            }
+
+            if (delta >= 0) {
+                roots.push({ x: x1, y: 0 }, { x: x2, y: 0 });
+            }
+
+            // Desenhando o gráfico
+            if (chart) chart.destroy(); // Apagando o gráfico anterior, se houver
+
+            const ctx = document.getElementById('grafico').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'f(x) = ax² + bx + c',
+                            data: data,
+                            borderColor: 'rgba(30, 136, 229, 1)',
+                            borderWidth: 1,
+                            fill: false,    // Não preenche a área sob a linha
+                            showLine: true,
+                            pointRadius: 0, 
+                        },
+                        {
+                            label: 'Raízes',
+                            data: roots,
+                            backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                            borderColor: 'rgba(255, 0, 0, 1)',
+                            radius: 5,
+                            pointStyle: 'circle',
+                            showLine: false,
+                        }
+                    ]
+                },
+                options: {
+    responsive: true,
+    scales: {
+        x: {
+            type: 'linear',
+            position: 'bottom',
+            grid: {
+                color: function(context) {
+                    if (context.tick.value === 0) {
+                        return 'rgba(0, 255, 0, 1)'; // Linha verde neon para o eixo Y
+                    }
+                    return 'rgba(255, 255, 255, 0.1)'; // Linhas suaves para outros ticks
+                },
+                lineWidth: function(context) {
+                    return context.tick.value === 0 ? 2 : 0.3; // Mais espesso no eixo Y
+                }
+            }
+        },
+        y: {
+            min: -50,
+            max: 50,
+            grid: {
+                drawOnChartArea: true,
+                color: function(context) {
+                    if (context.tick.value === 0) {
+                        return 'rgba(0, 255, 0, 1)'; // Linha verde neon para o eixo X
+                    }
+                    return 'rgba(255, 255, 255, 0.1)'; // Linhas suaves para outros ticks
+                },
+                lineWidth: function(context) {
+                    return context.tick.value === 0 ? 2 : 0.3; // Mais espesso no eixo X
+                }
+            }
+        }
+    }
+}
+
+            });
+        }
+    </script>
+</body>
+</html>
